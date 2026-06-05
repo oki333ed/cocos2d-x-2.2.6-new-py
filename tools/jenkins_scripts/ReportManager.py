@@ -12,7 +12,7 @@ from email.header import Header
 import smtplib,email,os,sys
 
 if os.path.exists(os.getcwd()+'\\monkeyrunner_Error.log') or os.path.exists(os.getcwd()+'/monkeyrunner_Error.log'):
-    print "Sending Monkeyrunner Test Report..."
+    print("Sending Monkeyrunner Test Report...")
     mail_from = 'redmine@cocos2d-x.org' #where the mail from
     mail_to  = ['739657621@qq.com','yangguangzaidongji@hotmail.com','yangguangzaidongji@gmail.com']
     to_string =''
@@ -23,7 +23,7 @@ if os.path.exists(os.getcwd()+'\\monkeyrunner_Error.log') or os.path.exists(os.g
     #msg = MIMEText('body')
     mail_attachment = 'monkeyrunner_Error.log'
     #msg = "\nhell"
-    print mail_to
+    print(mail_to)
 
     username = 'redmine@cocos2d-x.org'
     password = 'cocos2d-x.org'
@@ -48,5 +48,5 @@ if os.path.exists(os.getcwd()+'\\monkeyrunner_Error.log') or os.path.exists(os.g
     server.starttls()
     server.login(username,password)
     server.sendmail(mail_from, mail_to, msg.as_string())
-    print 'Eamil success!'
+    print('Eamil success!')
     server.quit()

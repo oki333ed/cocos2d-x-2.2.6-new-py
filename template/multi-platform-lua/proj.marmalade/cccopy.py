@@ -10,7 +10,7 @@ def cccopy(sourcePath, destPath):
         #if we're in a directory that doesn't exist in the destination folder then create a new folder
         if not os.path.isdir(dest):
             os.mkdir(dest)
-            print os.path.abspath(dest).replace(destAbsPath, '')[1:] + ' directory created.'
+            print(os.path.abspath(dest).replace(destAbsPath, '')[1:] + ' directory created.')
 
         #loop through all files in the directory
         for f in files:
@@ -21,9 +21,9 @@ def cccopy(sourcePath, destPath):
             if not os.path.isfile(newLoc):
                 try:
                     shutil.copy2(oldLoc, newLoc)
-                    print os.path.abspath(newLoc).replace(destAbsPath,'')[1:] + ' copied.'
+                    print(os.path.abspath(newLoc).replace(destAbsPath,'')[1:] + ' copied.')
                 except IOError:
-                    print os.path.abspath(newLoc).replace(destAbsPath,'')[1:] + ' already exists.'
+                    print(os.path.abspath(newLoc).replace(destAbsPath,'')[1:] + ' already exists.')
 
                 
                 

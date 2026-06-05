@@ -17,7 +17,7 @@ __docformat__ = 'restructuredtext'
 # python
 import sys
 import re
-import ConfigParser
+import configparser
 import os
 
 COCOS2D_CONSOLE_VERSION = '0.1'
@@ -58,7 +58,7 @@ def get_class(kls):
 
 def parse_plugins():
     classes = {}
-    cp = ConfigParser.ConfigParser()
+    cp = configparser.ConfigParser()
 
     # read global config file
     cocos2d_path = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -79,16 +79,16 @@ def parse_plugins():
 
 
 def help():
-    print "\n%s %s - cocos2d console: A command line tool for cocos2d" % (sys.argv[0], COCOS2D_CONSOLE_VERSION)
-    print "\nAvailable commands:"
+    print("\n%s %s - cocos2d console: A command line tool for cocos2d" % (sys.argv[0], COCOS2D_CONSOLE_VERSION))
+    print("\nAvailable commands:")
     classes = parse_plugins()
-    for key in classes.keys():
-        print "\t%s" % classes[key].brief_description()
-    print "\t"
-    print "\nExample:"
-    print "\t%s new --help" % sys.argv[0]
-    print "\t%s jscompile --help" % sys.argv[0]
-    print "\t%s luacompile --help" % sys.argv[0]
+    for key in list(classes.keys()):
+        print("\t%s" % classes[key].brief_description())
+    print("\t")
+    print("\nExample:")
+    print("\t%s new --help" % sys.argv[0])
+    print("\t%s jscompile --help" % sys.argv[0])
+    print("\t%s luacompile --help" % sys.argv[0])
     sys.exit(-1)
 
 if __name__ == "__main__":
@@ -102,5 +102,5 @@ if __name__ == "__main__":
         plugin = plugins[command]
         plugin().run(argv)
     else:
-        print "Error: argument '%s' not found" % command
-        print "Try with %s -h" % sys.argv[0]
+        print("Error: argument '%s' not found" % command)
+        print("Try with %s -h" % sys.argv[0])

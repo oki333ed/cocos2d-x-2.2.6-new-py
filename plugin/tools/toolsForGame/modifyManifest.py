@@ -60,5 +60,5 @@ for pluginName in plugins:
     # check & modify target xml
     haveChanged = doModify(sourceXml, targetRoot)
     if haveChanged:
-        print 'Modify AndroidManifest.xml for plugin ' + pluginName
+        print('Modify AndroidManifest.xml for plugin ' + pluginName)
         targetTree.write(manifestFile, 'UTF-8')

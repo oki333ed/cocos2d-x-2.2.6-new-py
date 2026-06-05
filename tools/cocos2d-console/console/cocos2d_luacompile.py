@@ -59,7 +59,7 @@ def encrypt(str, key):
     while q > 0:  
         sum = (sum + _DELTA) & 0xffffffff  
         e = sum >> 2 & 3  
-        for p in xrange(n):  
+        for p in range(n):  
             y = v[p + 1]  
             v[p] = (v[p] + ((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z))) & 0xffffffff  
             z = v[p]  
@@ -80,7 +80,7 @@ def decrypt(str, key):
     sum = (q * _DELTA) & 0xffffffff  
     while (sum != 0):  
         e = sum >> 2 & 3  
-        for p in xrange(n, 0, -1):  
+        for p in range(n, 0, -1):  
             z = v[p - 1]  
             v[p] = (v[p] - ((z >> 5 ^ y << 2) + (y >> 3 ^ z << 4) ^ (sum ^ y) + (k[p & 3 ^ e] ^ z))) & 0xffffffff  
             y = v[p]  
@@ -184,15 +184,15 @@ class CCPluginLuaCompile(cocos2d.CCPlugin):
         """
         Compiles lua file
         """
-        print("compiling lua (%s) to bytecode..." % lua_file)
+        print(("compiling lua (%s) to bytecode..." % lua_file))
         with pushd(self._luajit_dir):
 
             ret = subprocess.call(self._luajit_exe_path + " -b " + lua_file + " " + output_file, shell=True)
             if ret == 0:
-               print("_success " + output_file)
+               print(("_success " + output_file))
             else:
-               print("_failure" + output_file)
-            print "----------------------------------------"
+               print(("_failure" + output_file))
+            print("----------------------------------------")
 
     def deep_iterate_dir(self, rootDir):
         for lists in os.listdir(rootDir):
@@ -209,7 +209,7 @@ class CCPluginLuaCompile(cocos2d.CCPlugin):
         - `self`:
         """
 
-        print "processing lua script files"
+        print("processing lua script files")
         index = 0
         for src_dir in self._src_dir_arr:
             for lua_file in self._lua_files[src_dir]:
@@ -250,7 +250,7 @@ class CCPluginLuaCompile(cocos2d.CCPlugin):
 
         self.handle_all_lua_files()
         print("compilation finished")
-        print "------------------------------"
+        print("------------------------------")
 
     def parse_args(self, argv):
         """

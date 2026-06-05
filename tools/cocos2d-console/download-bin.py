@@ -80,19 +80,19 @@ class CocosZipInstaller(object):
             print("==> version file doesn't exist")
 
     def get_input_value(self, prompt):
-        ret = raw_input(prompt)
+        ret = input(prompt)
         ret.rstrip(" \t")
         return ret
 
     def download_file(self):
-        print("==> Ready to download '%s' from '%s'" % (self._filename, self._url))
-        import urllib2
+        print(("==> Ready to download '%s' from '%s'" % (self._filename, self._url)))
+        import urllib.request, urllib.error, urllib.parse
         try:
-            u = urllib2.urlopen(self._url)
-        except urllib2.HTTPError as e:
+            u = urllib.request.urlopen(self._url)
+        except urllib.error.HTTPError as e:
             if e.code == 404:
-                print("==> Error: Could not find the file from url: '%s'" % (self._url))
-            print("==> Http request failed, error code: " + str(e.code) + ", reason: " + e.read())
+                print(("==> Error: Could not find the file from url: '%s'" % (self._url)))
+            print(("==> Http request failed, error code: " + str(e.code) + ", reason: " + e.read()))
             sys.exit(1)
 
         f = open(self._filename, 'wb')
@@ -105,7 +105,7 @@ class CocosZipInstaller(object):
             # github server may not reponse a header information which contains `Content-Length`,
             # therefore, the size needs to be written hardcode here. While server doesn't return
             # `Content-Length`, use it instead
-            print("==> WARNING: Couldn't grab the file size from remote, use 'zip_file_size' section in '%s'" % self._config_path)
+            print(("==> WARNING: Couldn't grab the file size from remote, use 'zip_file_size' section in '%s'" % self._config_path))
             file_size = self._zip_file_size
 
         print("==> Start to download, please wait ...")
@@ -134,7 +134,7 @@ class CocosZipInstaller(object):
                     status = r"Downloaded: %6dK, Speed: %6.2f KB/S " % (file_size_dl / 1000, speed)
 
                 status = status + chr(8)*(len(status)+1)
-                print(status),
+                print((status), end=' ')
                 sys.stdout.flush()
                 block_size_per_second = 0
                 old_time = new_time
@@ -205,7 +205,7 @@ class CocosZipInstaller(object):
             if not zipfile.is_zipfile(self._filename):
                 raise UnrecognizedFormat("%s is not a zip file" % (self._filename))
         except UnrecognizedFormat as e:
-            print("==> Unrecognized zip format from your local '%s' file!" % (self._filename))
+            print(("==> Unrecognized zip format from your local '%s' file!" % (self._filename)))
             if os.path.isfile(self._filename):
                 os.remove(self._filename)
             print("==> Download it from internet again, please wait...")
@@ -257,14 +257,14 @@ class CocosZipInstaller(object):
                 elif self.ask_to_delete_downloaded_zip_file():
                     os.remove(self._filename)
         else:
-            print("==> Download (%s) finish!" % self._filename)
+            print(("==> Download (%s) finish!" % self._filename))
 
 
 def _check_python_version():
     major_ver = sys.version_info[0]
     if major_ver > 2:
-        print ("The python version is %d.%d. But python 2.x is required. (Version 2.7 is well tested)\n"
-               "Download it here: https://www.python.org/" % (major_ver, sys.version_info[1]))
+        print(("The python version is %d.%d. But python 2.x is required. (Version 2.7 is well tested)\n"
+               "Download it here: https://www.python.org/" % (major_ver, sys.version_info[1])))
         return False
 
     return True

@@ -29,7 +29,7 @@ def random_drag(a,b,c):
         device.drag((drag_x,drag_y),(drop_x,drop_y))
 
 def check_activity(a):
-    print "get running activities..."
+    print("get running activities...")
     subprocess.call("adb shell ps > running_activities.txt",shell=True)
     #subprocess.call("adb pull running_activities.txt",shell=True)
     
@@ -41,47 +41,47 @@ def check_activity(a):
         if len(line) == 0:
             str = "TestCpp wasn't running,maybe it has crashes,please checkout:"
             f2 = file('monkeyrunner_Error.log','w')
-            print "get logcat information..."
+            print("get logcat information...")
             f2.write(str)
             f2.write(a)
             #subprocess.call("adb shell logcat | $ANDROID_NDK/ndk-stack -sym $ANDROID_HOME/tools/obj/local/armeabi > monkeyrunner_Error.log",shell=True);
             f2.close()
             sys.exit(1)
-    print "subprocess has finished!"
+    print("subprocess has finished!")
     f1.close()
 
 # Connects to the current device, returning a MonkeyDevice object
 device = mr.waitForConnection()
 if not device:
-    print >> sys.stderr,"fail"
+    print("fail", file=sys.stderr)
     check_activity("is there a device connect to the testing machine.")
     sys.exit(1)
 else:
-    print "Start......"
+    print("Start......")
 
 # Installs the Android package. Notice that this method returns a boolean, so you can test
 # to see if the installation worked.
 if device.installPackage(sys.argv[1]):
-    print "Install success!"
+    print("Install success!")
 else:
-    print "Install failed,please make sure you have put apk in the right places"
+    print("Install failed,please make sure you have put apk in the right places")
     check_activity("you have put apk in the right place")
     sys.exit(1)
 
 # sets a variable with the package's internal name
 package = 'org.cocos2dx.testcpp'
-print "Package name: "+ package
+print("Package name: "+ package)
 
 # sets a variable with the name of an Activity in the package
 activity = 'org.cocos2dx.testcpp.TestCpp'
-print "Activity name: " + activity
+print("Activity name: " + activity)
 
 # sets the name of the component to start
 runComponent = package + '/' + activity
 
 # Runs the component
 device.startActivity(component=runComponent)
-print "Running activity......"
+print("Running activity......")
 
 #Set Screen's Length and Width
 s_width = 800
@@ -91,7 +91,7 @@ s_height = 480
 Acticity_IsRunning = 1
 
 #----------------ActionsTest----------------
-print "Run ActionsTest"
+print("Run ActionsTest")
 mr.sleep(2.0)
 device.touch(s_width/2,s_height/48*5,'DOWN_AND_UP')
 #Last Test
@@ -102,46 +102,46 @@ common_test(1,6,1.0)
 mr.sleep(1.0)
 #Next Test
 #device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
-print "ActionsTest finished!"
+print("ActionsTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ActionsTest")
 
 #----------------TransitionsTest----------------
-print "Run TransitionsTest"
+print("Run TransitionsTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/6,'DOWN_AND_UP')
 common_test(1,27,1.0)
 mr.sleep(1.0)
-print "TransitionsTest finished!"
+print("TransitionsTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("TransitionsTest")
 
 #----------------ActionsProgressTest----------------
-print "Run ActionsProgressTest"
+print("Run ActionsProgressTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*11,'DOWN_AND_UP')
 common_test(1,8,2.0)
 mr.sleep(1.0)
-print "ActionsProgressTest finished!"
+print("ActionsProgressTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ActionsProgressTest")
 
 #----------------EffectsTest----------------
 mr.sleep(1.0)
-print "Run EffectsTest"
+print("Run EffectsTest")
 device.touch(s_width/2,s_height/3,'DOWN_AND_UP')
 common_test(1,22,3.0)
 mr.sleep(1.0)
-print "EffectsTest finished!"
+print("EffectsTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("EffectsTest")
 
 #----------------ClickAndMoveTest----------------
-print "Run ClickAndMoveTest"
+print("Run ClickAndMoveTest")
 mr.sleep(5.0)
 device.touch(s_width/2,s_height/12*5,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -149,47 +149,47 @@ random_click(1,11,2.0)
 mr.sleep(1.0)
 random_click(1,101,0.0)
 mr.sleep(1.0)
-print "ClickAndMoveTest finished!"
+print("ClickAndMoveTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ClickAndMoveTest")
 
 #----------------RotateWorldTest----------------
-print "Run RotateWorldTest"
+print("Run RotateWorldTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/2,'DOWN_AND_UP')
 mr.sleep(5.0)
-print "RotateWorldTest finished!"
+print("RotateWorldTest finished!")
 mr.sleep(3.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("RotateWorldTest")
 
 #----------------ParticleTest----------------
-print "Run ParticleTest"
+print("Run ParticleTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*7,'DOWN_AND_UP')
 common_test(1,43,2.0)
-print "ParticleTest finished!"
+print("ParticleTest finished!")
 mr.sleep(2.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ParticleTest")
 
 #----------------ActionsEaseTest----------------
-print "Run ActionsEaseTest"
+print("Run ActionsEaseTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/3*2,'DOWN_AND_UP')
 mr.sleep(2.0)
 common_test(1,14,2.0)
-print "ActionsEaseTest finished!"
+print("ActionsEaseTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ActionsEaseTest")
 
 #----------------MotionStreakTest----------------
-print "Run MontionStreakTest"
+print("Run MontionStreakTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/4*3,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -200,29 +200,29 @@ mr.sleep(1.0)
 device.touch(s_width/2,s_height/4*3,'DOWN_AND_UP')
 mr.sleep(1.0)
 random_drag(1,11,0.5)
-print "MontionStreakTest finished!"
+print("MontionStreakTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("MontionStreakTest")
 
 #----------------DrawPrimitivesTest----------------
-print "Run DrawprimitivesTest"
+print("Run DrawprimitivesTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/6*5,'DOWN_AND_UP')
 mr.sleep(1.0)
-print "DrawPrimitivesTest finished!"
+print("DrawPrimitivesTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("DrawPrimitivesTest")
 
 #----------------NodeTest----------------
-print "Run NodeTest"
+print("Run NodeTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*11,'DOWN_AND_UP')
 mr.sleep(1.0)
 common_test(1,14,1.0)
-print "NodeTest finished!"
+print("NodeTest finished!")
 mr.sleep(3.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -231,17 +231,17 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------TouchesTest----------------
-print "Run TouchesTest"
+print("Run TouchesTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12,'DOWN_AND_UP')
-print "TouchesTest finished!"
+print("TouchesTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("TouchesTest")
 
 #----------------MenuTest----------------
-print "Run MenuTest"
+print("Run MenuTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/6,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -258,25 +258,25 @@ mr.sleep(1.0)
 #Configuration
 device.touch(400,260,'DOWN_AND_UP')
 mr.sleep(1.0)
-print "MenuTest finished!"
+print("MenuTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("MenuTest")
 
 #----------------ActionManagerTest----------------
-print "Run ActionManagerTest"
+print("Run ActionManagerTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*11,'DOWN_AND_UP')
 common_test(1,5,3.0)
-print "ActionManagerTest finished!"
+print("ActionManagerTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ActionManagerTest")
 
 #----------------LayerTest----------------
-print "Run LayerTest"
+print("Run LayerTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/3,'DOWN_AND_UP')
 random_drag(1,11,0.5)
@@ -290,13 +290,13 @@ mr.sleep(2.0)
 #Next Test
 device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
 random_drag(1,11,0.5)
-print "LayerTest finished!"
+print("LayerTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("LayerTest")
 
 #----------------SceneTest----------------
-print "Run SceneTest"
+print("Run SceneTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*5,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -313,28 +313,28 @@ mr.sleep(1.5)
 device.touch(s_width/2,s_height/2,'DOWN_AND_UP')
 mr.sleep(1.5)
 device.touch(s_width/2,s_height/2,'DOWN_AND_UP')
-print "SceneTest finished!"
+print("SceneTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("SceneTest")
 
 #----------------ParallaxTest----------------
-print "Run ParallaxTest"
+print("Run ParallaxTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/2,'DOWN_AND_UP')
 mr.sleep(5.0)
 #Next Test
 device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
 random_drag(1,11,0.5)
-print "ParallaxTest finished!"
+print("ParallaxTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ParallaxTest")
 
 #----------------TileMapTest----------------
-print "Run TileMapTest"
+print("Run TileMapTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*7,'DOWN_AND_UP')
 mr.sleep(2.0)
@@ -344,54 +344,54 @@ for TileMap_i in range(1,20):
     device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
     
 mr.sleep(2.0)
-print "TileMapTest finished!"
+print("TileMapTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("TileMapTest")
 
 #----------------IntervalTest----------------
-print "Run IntervalTest"
+print("Run IntervalTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/3*2,'DOWN_AND_UP')
 mr.sleep(3.0)
 device.touch(s_width/2,s_height/12,'DOWN_AND_UP')
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12,'DOWN_AND_UP')
-print "IntervalTest finished!"
+print("IntervalTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("IntervalTest")
 
 #----------------ChipmunkAccelTouchTest----------------
-print "Run ChipmunkAccelTouchTest"
+print("Run ChipmunkAccelTouchTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/4*3,'DOWN_AND_UP')
 random_click(1,21,0.1)
-print "ChipmunkAccelTouchTest finished!"
+print("ChipmunkAccelTouchTest finished!")
 mr.sleep(2.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("ChipmunkAccelTouchTest")
 
 #----------------LabelTest----------------
-print "Run LabelTest"
+print("Run LabelTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/6*5,'DOWN_AND_UP')
 mr.sleep(3.0)
 common_test(1,26,0.5)
 mr.sleep(1.0)
-print "LableTest finished!"
+print("LableTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("LabelTest")
 
 #----------------TestInputTest----------------
-print "Run TestInputTest"
+print("Run TestInputTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*11,'DOWN_AND_UP')
-print "TestInputTest finished!"
+print("TestInputTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -400,7 +400,7 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------SpriteTest----------------
-print "Run SpriteTest"
+print("Run SpriteTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/16,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -414,14 +414,14 @@ mr.sleep(1.0)
 device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
 mr.sleep(1.0)
 common_test(1,109,0.5)
-print "SpriteTest finished!"
+print("SpriteTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("SpriteTest")
 
 #----------------SchdulerTest----------------
-print "Run SchdulerTest"
+print("Run SchdulerTest")
 mr.sleep(2.0)
 device.touch(s_width/2,s_height/48*7,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -438,14 +438,14 @@ mr.sleep(1.0)
 device.drag((s_width/16*5,s_height/24),(s_width/16*3,s_height/24))
 mr.sleep(1.0)
 common_test(1,11,1)
-print "SchdulerTest finished!"
+print("SchdulerTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("SchdulerTest")
 
 #----------------RenderTextureTest----------------
-print "Run RenderTextureTest"
+print("Run RenderTextureTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*11,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -463,93 +463,93 @@ random_click(1,11,0.1)
 mr.sleep(1.0)
 #Next Test
 device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
-print "RenderTextureTest finished!"
+print("RenderTextureTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("RenderTextureTest")
 
 #----------------Testure2DTest----------------
-print "Run Testure2DTest"
+print("Run Testure2DTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/16*5,'DOWN_AND_UP')
 common_test(1,36,0.5)
-print "Testure2DTest finished!"
+print("Testure2DTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("Testure2DTest")
 
 #----------------Box2dTest----------------
-print "Run Box2dTest"
+print("Run Box2dTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*19,'DOWN_AND_UP')
 random_click(1,31,0.1)
-print "Box2dTest finished!"
+print("Box2dTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("Box2dTest")
 
 #----------------Box2dTestBed----------------
-print "Run Box2dTestBed"
+print("Run Box2dTestBed")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*23,'DOWN_AND_UP')
 common_test(1,36,2.0)
-print "Box2dTestBed finished!"
+print("Box2dTestBed finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("Box2dTestBed")
 
 #----------------EffectAdvancedTest----------------
-print "Run EffectAdvancedTest"
+print("Run EffectAdvancedTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/16*9,'DOWN_AND_UP')
 common_test(1,6,1.0)
-print "EffectAdvancedTest finished!"
+print("EffectAdvancedTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("EffectAdvancedTest")
 
 #----------------Accelerometer----------------
-print "Run Accelerometer"
+print("Run Accelerometer")
 mr.sleep(5.0)
 device.touch(s_width/2,s_height/48*31,'DOWN_AND_UP')
 mr.sleep(1.0)
-print "Accelerometer finished!"
+print("Accelerometer finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 mr.sleep(3.0)
 check_activity("Accelerometer")
 
 #----------------KeypadTest----------------
-print "Run KeypadTest"
+print("Run KeypadTest")
 mr.sleep(3.0)
 device.touch(s_width/2,s_height/48*35,'DOWN_AND_UP')
 mr.sleep(1.0)
 device.press('KEYCODE_BACK','DOWN_AND_UP')
-print "KeypadTest finished!"
+print("KeypadTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("KeypadTest")
 
 #----------------CocosDenshionTest----------------
-print "Run CocosDenshionTest"
+print("Run CocosDenshionTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*39,'DOWN_AND_UP')
 #device.touch(400,30,'DOWN_AND_UP')
 #device.touch(400,100,'DOWN_AND_UP')
-print "CocosDenshionTest finished!"
+print("CocosDenshionTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("CocosDenshionTest")
 
 #----------------PerformanceTest----------------
-print "Run PerformanceTest"
+print("Run PerformanceTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*43,'DOWN_AND_UP')
 mr.sleep(1.0)
@@ -602,17 +602,17 @@ random_drag(1,11,0.2)
 mr.sleep(1.0)
 #Back
 device.touch(s_width/20*19,s_height/96*91,'DOWN_AND_UP')
-print "PerformanceTest finished!"
+print("PerformanceTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("PerformanceTest")
 
 #----------------ZwoptexTest----------------
-print "Run ZwoptexTest"
+print("Run ZwoptexTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/48*47,'DOWN_AND_UP')
-print "ZwoptexTest finished!"
+print("ZwoptexTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -621,12 +621,12 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------CurlTest----------------
-print "Run CurlTest"
+print("Run CurlTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/4,'DOWN_AND_UP')
 mr.sleep(1.0)
 random_click(1,2,1.0)
-print "CurlTest finished!"
+print("CurlTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -635,10 +635,10 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------UserDefaultTest----------------
-print "Run UserDefaultTest"
+print("Run UserDefaultTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/3,'DOWN_AND_UP')
-print "UserDefaultTest finished!"
+print("UserDefaultTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -647,10 +647,10 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------BugsTest----------------
-print "Run BugsTest"
+print("Run BugsTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*5,'DOWN_AND_UP')
-print "BugsTest is finished!"
+print("BugsTest is finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -659,13 +659,13 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------FontTest----------------
-print "Run FontTest"
+print("Run FontTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/2,'DOWN_AND_UP')
 mr.sleep(1.0)
 common_test(1,6,0.5)
 mr.sleep(1.0)
-print "FontTest finished!"
+print("FontTest finished!")
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
 check_activity("FontTest")
@@ -673,10 +673,10 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------CurrentLanguageTest----------------
-print "Run CurrentLanguageTest"
+print("Run CurrentLanguageTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/12*7,'DOWN_AND_UP')
-print "CurrentLanguageTest finished!"
+print("CurrentLanguageTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -685,10 +685,10 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------TextureCacheTest----------------
-print "Run TextureCacheTest"
+print("Run TextureCacheTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/3*2,'DOWN_AND_UP')
-print "TextureCacheTest is finished!"
+print("TextureCacheTest is finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -697,7 +697,7 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------ExtensionsTest----------------
-print "Run ExtensionsTest"
+print("Run ExtensionsTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/4*3,'DOWN_AND_UP')
 #NotificationCenterTest
@@ -793,7 +793,7 @@ mr.sleep(1.5)
         #ItemBack
 device.touch(s_width/40,s_height/24,'DOWN_AND_UP')
 mr.sleep(1.5)
-print "ExtensionsTest finished!"
+print("ExtensionsTest finished!")
 mr.sleep(1.5)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -802,7 +802,7 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------ShaderTest----------------
-print "Run ShaderTest"
+print("Run ShaderTest")
 mr.sleep(1.0)
 device.touch(s_width/2,s_height/6*5,'DOWN_AND_UP')
 mr.sleep(7.0)
@@ -814,7 +814,7 @@ device.drag((s_width/80*51,s_height/3*2),(s_width/80*29,s_height/3*2))
 mr.sleep(1.0)
 #Next Test
 device.touch(s_width/8*5,s_height/16*15,'DOWN_AND_UP')
-print "ShaderTest finished!"
+print("ShaderTest finished!")
 mr.sleep(3.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')
@@ -823,12 +823,12 @@ mr.sleep(1.0)
 device.drag((s_width/4*3,s_height/16*15),(s_width/4*3,0))
 
 #----------------MutiTouchTest----------------
-print "Run MutiTouchTest"
+print("Run MutiTouchTest")
 mr.sleep(3.0)
 device.touch(s_width/2,s_height/12*11,'DOWN_AND_UP')
 mr.sleep(1.0)
 random_drag(1,10,0.1)
-print "MutiTouchTest finished!"
+print("MutiTouchTest finished!")
 mr.sleep(1.0)
 #MainMenu
 device.touch(s_width/40*39,s_height/96*91,'DOWN_AND_UP')

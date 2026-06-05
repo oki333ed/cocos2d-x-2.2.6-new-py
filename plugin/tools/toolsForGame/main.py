@@ -1,10 +1,10 @@
 import sys, string, os
-from Tkinter import *
+from tkinter import *
 import steps
 
 Plugins = sys.argv[1]
 
-print Plugins
+print(Plugins)
 
 pluginList = Plugins.split(':')
 maxStep = 2

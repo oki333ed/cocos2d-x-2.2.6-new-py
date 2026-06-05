@@ -1,5 +1,5 @@
 import sys, string, os
-from Tkinter import *
+from tkinter import *
 
 # define class step
 class step:

@@ -19,6 +19,7 @@ import json
 import inspect
 
 import cocos2d
+from functools import cmp_to_key
 
 class CCPluginJSCompile(cocos2d.CCPlugin):
     """
@@ -100,7 +101,7 @@ class CCPluginJSCompile(cocos2d.CCPlugin):
         """
         Compiles js file
         """
-        print "compiling js (%s) to bytecode..." % (jsfile)
+        print("compiling js (%s) to bytecode..." % (jsfile))
         jsbcc_exe_path = os.path.join(self._workingdir, "bin", "jsbcc");
 
         ret = subprocess.call(jsbcc_exe_path + " " + jsfile+" "+output_file, shell=True)
@@ -108,7 +109,7 @@ class CCPluginJSCompile(cocos2d.CCPlugin):
             self._success.append(jsfile)
         else:
             self._failure.append(jsfile)
-        print "----------------------------------------"
+        print("----------------------------------------")
 
     def compress_js(self):
         """
@@ -121,13 +122,13 @@ class CCPluginJSCompile(cocos2d.CCPlugin):
 
         compiler_jar_path = os.path.join(self._workingdir, "bin", "compiler.jar")
         command = "java -jar %s --js %s --js_output_file %s" % (compiler_jar_path, jsfiles, self._compressed_js_path)
-        print "\ncommand:"+command+"\n"
+        print("\ncommand:"+command+"\n")
 
         ret = subprocess.call(command, shell=True)
         if ret == 0:
-            print "js files were compressed successfully..."
+            print("js files were compressed successfully...")
         else:
-            print "js files were compressed unsuccessfully..."
+            print("js files were compressed unsuccessfully...")
 
     def deep_iterate_dir(self, rootDir):
         for lists in os.listdir(rootDir):
@@ -222,8 +223,8 @@ class CCPluginJSCompile(cocos2d.CCPlugin):
 
             if (self._config != None):
                 pre_order = self._config["pre_order"]
-                self._js_files[src_dir].sort(cmp=self.js_filename_pre_order_compare)
-                self._js_files[src_dir].sort(cmp=self.js_filename_post_order_compare)
+                self._js_files[src_dir].sort(key=cmp_to_key(self.js_filename_pre_order_compare))
+                self._js_files[src_dir].sort(key=cmp_to_key(self.js_filename_post_order_compare))
 
         # print '-------------------'
         # print "after:" + str(self._js_files)
@@ -271,11 +272,11 @@ class CCPluginJSCompile(cocos2d.CCPlugin):
 
         self.reorder_js_files()
         self.handle_all_js_files()
-        print "\nCompilation finished, (%d) files succeed, (%d) files fail." % (len(self._success), len(self._failure))
+        print("\nCompilation finished, (%d) files succeed, (%d) files fail." % (len(self._success), len(self._failure)))
         if len(self._failure) > 0:
-            print "Failure files are:"
-            print self._failure
-        print "------------------------------"
+            print("Failure files are:")
+            print(self._failure)
+        print("------------------------------")
 
     def parse_args(self, argv):
         """

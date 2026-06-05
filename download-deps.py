@@ -57,19 +57,19 @@ _extracted_folder_name = ''
 _zip_file_size = 0
 
 def get_input_value(prompt):
-    ret = raw_input(prompt)
+    ret = input(prompt)
     ret.rstrip(" \t")
     return ret
 
 def download_file(url, filename):
-    print("==> Ready to download '%s' from '%s'" % (filename, url))
-    import urllib2
+    print(("==> Ready to download '%s' from '%s'" % (filename, url)))
+    import urllib.request, urllib.error, urllib.parse
     try:
-        u = urllib2.urlopen(url)
-    except urllib2.HTTPError as e:
+        u = urllib.request.urlopen(url)
+    except urllib.error.HTTPError as e:
         if e.code == 404:
-            print("==> Error: Could not find the file from url: '%s'" % (url))
-        print("==> Http request failed, error code: " + str(e.code) + ", reason: " + e.read())
+            print(("==> Error: Could not find the file from url: '%s'" % (url)))
+        print(("==> Http request failed, error code: " + str(e.code) + ", reason: " + e.read()))
         sys.exit(1)
 
     f = open(filename, 'wb')
@@ -111,7 +111,7 @@ def download_file(url, filename):
                 status = r"Downloaded: %6dK, Speed: %6.2f KB/S " % (file_size_dl / 1000, speed)
 
             status = status + chr(8)*(len(status)+1)
-            print(status),
+            print((status), end=' ')
             sys.stdout.flush()
             block_size_per_second = 0
             old_time = new_time
@@ -193,7 +193,7 @@ def download_and_unzip_file(url, filename):
     try:
         unpack_zipfile(filename, _workpath)
     except UnrecognizedFormat as e:
-        print("==> Unrecognized zip format from your local '%s' file!" % (filename))
+        print(("==> Unrecognized zip format from your local '%s' file!" % (filename)))
         if os.path.isfile(filename):
             os.remove(filename)
         print("==> Download it from internet again, please wait...")
@@ -202,8 +202,8 @@ def download_and_unzip_file(url, filename):
 def _check_python_version():
     major_ver = sys.version_info[0]
     if major_ver > 2:
-        print ("The python version is %d.%d. But python 2.x is required. (Version 2.7 is well tested)\n"
-               "Download it here: https://www.python.org/" % (major_ver, sys.version_info[1]))
+        print(("The python version is %d.%d. But python 2.x is required. (Version 2.7 is well tested)\n"
+               "Download it here: https://www.python.org/" % (major_ver, sys.version_info[1])))
         return False
 
     return True

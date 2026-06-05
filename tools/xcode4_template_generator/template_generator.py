@@ -151,20 +151,20 @@ class Xcode4Template(object):
         self.generate_nodes()
         self.output.append( _template_close_body )
 
-        print "\n".join( self.output )
+        print("\n".join( self.output ))
 
     def generate( self ):
         self.scandirs( self.directory )
         self.generate_xml()
 
 def help():
-    print "%s v1.0 - An utility to generate Xcode 4 templates" % sys.argv[0]
-    print "Usage:"
-    print "\t-d directory (directory to parse)"
-    print "\t-g directory_used_as_starting_group (if 1, then 'libs/cocos2d/Support/' -> ['cocos2d','Support'] ignoring 'libs')"
-    print "\t-i identifier (Xcode4 template identifier)"
-    print "\nExample:"
-    print "\t%s -d cocos2d -g 0 -i cocos2dlib" % sys.argv[0]
+    print("%s v1.0 - An utility to generate Xcode 4 templates" % sys.argv[0])
+    print("Usage:")
+    print("\t-d directory (directory to parse)")
+    print("\t-g directory_used_as_starting_group (if 1, then 'libs/cocos2d/Support/' -> ['cocos2d','Support'] ignoring 'libs')")
+    print("\t-i identifier (Xcode4 template identifier)")
+    print("\nExample:")
+    print("\t%s -d cocos2d -g 0 -i cocos2dlib" % sys.argv[0])
     sys.exit(-1)
 
 if __name__ == "__main__":
@@ -194,8 +194,8 @@ if __name__ == "__main__":
                 exclude = arg.split()
             if opt in ("-a","--append"):
                 append = arg
-    except getopt.GetoptError,e:
-        print e
+    except getopt.GetoptError as e:
+        print(e)
 
     if directory == None:
         help()

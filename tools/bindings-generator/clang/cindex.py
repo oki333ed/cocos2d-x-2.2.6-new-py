@@ -369,7 +369,7 @@ class AccessSpecifierKind(object):
         if value >= len(AccessSpecifierKind._kinds):
             AccessSpecifierKind._kinds += [None] * (value - len(AccessSpecifierKind._kinds) + 1)
         if AccessSpecifierKind._kinds[value] is not None:
-            raise ValueError,'AccessSpecifierKind already loaded'
+            raise ValueError('AccessSpecifierKind already loaded')
         self.value = value
         AccessSpecifierKind._kinds[value] = self
         AccessSpecifierKind._name_map = None
@@ -382,7 +382,7 @@ class AccessSpecifierKind(object):
         """Get the enumeration name of this access specifier kind"""
         if self._name_map is None:
             self._name_map = {}
-            for key,value in AccessSpecifierKind.__dict__.items():
+            for key,value in list(AccessSpecifierKind.__dict__.items()):
                 if isinstance(value,AccessSpecifierKind):
                     self._name_map[value] = key
         return self._name_map[self]
@@ -390,13 +390,13 @@ class AccessSpecifierKind(object):
     @staticmethod
     def from_id(id):
         if id >= len(AccessSpecifierKind._kinds) or AccessSpecifierKind._kinds[id] is None:
-            raise ValueError,'Unknown access specifier kind'
+            raise ValueError('Unknown access specifier kind')
         return AccessSpecifierKind._kinds[id]
 
     @staticmethod
     def get_all_kinds():
         """Return all AccessSpecifierKind enumeration instances."""
-        return filter(None, AccessSpecifierKind._kinds)
+        return [_f for _f in AccessSpecifierKind._kinds if _f]
 
     def __repr__(self):
         return 'AccessSpecifierKind.%s' % (self.name,)
@@ -425,7 +425,7 @@ class CursorKind(object):
         if value >= len(CursorKind._kinds):
             CursorKind._kinds += [None] * (value - len(CursorKind._kinds) + 1)
         if CursorKind._kinds[value] is not None:
-            raise ValueError,'CursorKind already loaded'
+            raise ValueError('CursorKind already loaded')
         self.value = value
         CursorKind._kinds[value] = self
         CursorKind._name_map = None
@@ -438,7 +438,7 @@ class CursorKind(object):
         """Get the enumeration name of this cursor kind."""
         if self._name_map is None:
             self._name_map = {}
-            for key,value in CursorKind.__dict__.items():
+            for key,value in list(CursorKind.__dict__.items()):
                 if isinstance(value,CursorKind):
                     self._name_map[value] = key
         return self._name_map[self]
@@ -446,13 +446,13 @@ class CursorKind(object):
     @staticmethod
     def from_id(id):
         if id >= len(CursorKind._kinds) or CursorKind._kinds[id] is None:
-            raise ValueError,'Unknown cursor kind'
+            raise ValueError('Unknown cursor kind')
         return CursorKind._kinds[id]
 
     @staticmethod
     def get_all_kinds():
         """Return all CursorKind enumeration instances."""
-        return filter(None, CursorKind._kinds)
+        return [_f for _f in CursorKind._kinds if _f]
 
     def is_declaration(self):
         """Test if this is a declaration kind."""
@@ -1277,7 +1277,7 @@ class TypeKind(object):
         if value >= len(TypeKind._kinds):
             TypeKind._kinds += [None] * (value - len(TypeKind._kinds) + 1)
         if TypeKind._kinds[value] is not None:
-            raise ValueError,'TypeKind already loaded'
+            raise ValueError('TypeKind already loaded')
         self.value = value
         TypeKind._kinds[value] = self
         TypeKind._name_map = None
@@ -1290,7 +1290,7 @@ class TypeKind(object):
         """Get the enumeration name of this cursor kind."""
         if self._name_map is None:
             self._name_map = {}
-            for key,value in TypeKind.__dict__.items():
+            for key,value in list(TypeKind.__dict__.items()):
                 if isinstance(value,TypeKind):
                     self._name_map[value] = key
         return self._name_map[self]
@@ -1303,7 +1303,7 @@ class TypeKind(object):
     @staticmethod
     def from_id(id):
         if id >= len(TypeKind._kinds) or TypeKind._kinds[id] is None:
-            raise ValueError,'Unknown type kind %d' % id
+            raise ValueError('Unknown type kind %d' % id)
         return TypeKind._kinds[id]
 
     def __repr__(self):
@@ -2048,9 +2048,9 @@ class TranslationUnit(ClangObject):
                     # FIXME: It would be great to support an efficient version
                     # of this, one day.
                     value = value.read()
-                    print value
+                    print(value)
                 if not isinstance(value, str):
-                    raise TypeError,'Unexpected unsaved file contents.'
+                    raise TypeError('Unexpected unsaved file contents.')
                 unsaved_files_array[i].name = name
                 unsaved_files_array[i].contents = value
                 unsaved_files_array[i].length = len(value)
@@ -2099,9 +2099,9 @@ class TranslationUnit(ClangObject):
                     # FIXME: It would be great to support an efficient version
                     # of this, one day.
                     value = value.read()
-                    print value
+                    print(value)
                 if not isinstance(value, str):
-                    raise TypeError,'Unexpected unsaved file contents.'
+                    raise TypeError('Unexpected unsaved file contents.')
                 unsaved_files_array[i].name = name
                 unsaved_files_array[i].contents = value
                 unsaved_files_array[i].length = len(value)

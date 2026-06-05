@@ -160,7 +160,7 @@ class NativeType(object):
                     decl = ntype.get_canonical().get_declaration()
                     nt.namespaced_name = namespaced_name(decl)
 
-                    r = re.compile('function<(\S+) \((.*)\)>').search(decl.displayname)
+                    r = re.compile(r'function<(\S+) \((.*)\)>').search(decl.displayname)
                     (ret_type, params) = r.groups()
                     params = filter(None, params.split(", "))
 
@@ -191,16 +191,16 @@ class NativeType(object):
         return ", ".join(params)
 
     def from_native(self, convert_opts):
-        assert(convert_opts.has_key('generator'))
+        assert('generator' in convert_opts)
         generator = convert_opts['generator']
         name = self.name
         if self.is_object:
-            if not generator.config['conversions']['from_native'].has_key(name):
+            if name not in generator.config['conversions']['from_native']:
                 name = "object"
         elif self.is_enum:
             name = "int"
 
-        if generator.config['conversions']['from_native'].has_key(name):
+        if name in generator.config['conversions']['from_native']:
             tpl = generator.config['conversions']['from_native'][name]
             tpl = Template(tpl, searchList=[convert_opts])
             return str(tpl).rstrip()
@@ -219,11 +219,11 @@ class NativeType(object):
 
         if self.is_function:
             tpl = Template(file=os.path.join(generator.target, "templates", "lambda.c"),
-                searchList=[convert_opts, self])
+                            searchList=[convert_opts, self])
             indent = convert_opts['level'] * "\t"
             return str(tpl).replace("\n", "\n" + indent)
 
-        if generator.config['conversions']['to_native'].has_key(name):
+        if name in generator.config['conversions']['to_native']:
             tpl = generator.config['conversions']['to_native'][name]
             tpl = Template(tpl, searchList=[convert_opts])
             return str(tpl).rstrip()
@@ -231,7 +231,7 @@ class NativeType(object):
 
     def to_string(self, generator):
         conversions = generator.config['conversions']
-        if conversions.has_key('native_types') and conversions['native_types'].has_key(self.namespaced_name):
+        if 'native_types' in conversions and self.namespaced_name in conversions['native_types']:
             return conversions['native_types'][self.namespaced_name]
         return self.namespaced_name
 
@@ -245,7 +245,7 @@ class NativeField(object):
         self.name = cursor.displayname
         self.kind = cursor.type.kind
         self.location = cursor.location
-        member_field_re = re.compile('m_(\w+)')
+        member_field_re = re.compile(r'm_(\w+)')
         match = member_field_re.match(self.name)
         if match:
             self.pretty_name = match.group(1)
@@ -309,7 +309,7 @@ class NativeFunction(object):
                         searchList=[current_class, self])
         gen.head_file.write(str(tpl))
         if self.static:
-            if config['definitions'].has_key('sfunction'):
+            if 'sfunction' in config['definitions']:
                 tpl = Template(config['definitions']['sfunction'],
                                     searchList=[current_class, self])
                 self.signature_name = str(tpl)
@@ -317,12 +317,12 @@ class NativeFunction(object):
                             searchList=[current_class, self])
         else:
             if not self.is_constructor:
-                if config['definitions'].has_key('ifunction'):
+                if 'ifunction' in config['definitions']:
                     tpl = Template(config['definitions']['ifunction'],
                                     searchList=[current_class, self])
                     self.signature_name = str(tpl)
             else:
-                if config['definitions'].has_key('constructor'):
+                if 'constructor' in config['definitions']:
                     tpl = Template(config['definitions']['constructor'],
                                     searchList=[current_class, self])
                     self.signature_name = str(tpl)
@@ -357,7 +357,7 @@ class NativeOverloadedFunction(object):
                         searchList=[current_class, self])
         gen.head_file.write(str(tpl))
         if static:
-            if config['definitions'].has_key('sfunction'):
+            if 'sfunction' in config['definitions']:
                 tpl = Template(config['definitions']['sfunction'],
                                 searchList=[current_class, self])
                 self.signature_name = str(tpl)
@@ -365,12 +365,12 @@ class NativeOverloadedFunction(object):
                             searchList=[current_class, self])
         else:
             if not self.is_constructor:
-                if config['definitions'].has_key('ifunction'):
+                if 'ifunction' in config['definitions']:
                     tpl = Template(config['definitions']['ifunction'],
                                     searchList=[current_class, self])
                     self.signature_name = str(tpl)
             else:
-                if config['definitions'].has_key('constructor'):
+                if 'constructor' in config['definitions']:
                     tpl = Template(config['definitions']['constructor'],
                                     searchList=[current_class, self])
                     self.signature_name = str(tpl)
@@ -482,7 +482,7 @@ class NativeClass(object):
             parent = cursor.get_definition()
             if parent.displayname not in self.generator.base_classes_to_skip:
                 #if parent and self.generator.in_listed_classes(parent.displayname):
-                if not self.generator.generated_classes.has_key(parent.displayname):
+                if parent.displayname not in self.generator.generated_classes:
                     parent = NativeClass(parent, self.generator)
                     self.generator.generated_classes[parent.class_name] = parent
                 else:
@@ -501,7 +501,7 @@ class NativeClass(object):
                 if m.not_supported:
                     return
                 if m.static:
-                    if not self.static_methods.has_key(registration_name):
+                    if registration_name not in self.static_methods:
                         self.static_methods[registration_name] = m
                     else:
                         previous_m = self.static_methods[registration_name]
@@ -510,7 +510,7 @@ class NativeClass(object):
                         else:
                             self.static_methods[registration_name] = NativeOverloadedFunction([m, previous_m])
                 else:
-                    if not self.methods.has_key(registration_name):
+                    if registration_name not in self.methods:
                         self.methods[registration_name] = m
                     else:
                         previous_m = self.methods[registration_name]
@@ -528,7 +528,7 @@ class NativeClass(object):
 
             m = NativeFunction(cursor)
             m.is_constructor = True
-            if not self.methods.has_key('constructor'):
+            if 'constructor' not in self.methods:
                 self.methods['constructor'] = m
             else:
                 previous_m = self.methods['constructor']
@@ -571,7 +571,7 @@ class Generator(object):
             for skip in list_of_skips:
                 class_name, methods = skip.split("::")
                 self.skip_classes[class_name] = []
-                match = re.match("\[([^]]+)\]", methods)
+                match = re.match(r"\[([^]]+)\]", methods)
                 if match:
                     self.skip_classes[class_name] = match.group(1).split(" ")
                 else:
@@ -581,7 +581,7 @@ class Generator(object):
             for rename in list_of_function_renames:
                 class_name, methods = rename.split("::")
                 self.rename_functions[class_name] = {}
-                match = re.match("\[([^]]+)\]", methods)
+                match = re.match(r"\[([^]]+)\]", methods)
                 if match:
                     list_of_methods = match.group(1).split(" ")
                     for pair in list_of_methods:
@@ -598,39 +598,39 @@ class Generator(object):
 
 
     def should_rename_function(self, class_name, method_name):
-        if self.rename_functions.has_key(class_name) and self.rename_functions[class_name].has_key(method_name):
+        if class_name in self.rename_functions and method_name in self.rename_functions[class_name]:
             # print >> sys.stderr, "will rename %s to %s" % (method_name, self.rename_functions[class_name][method_name])
             return self.rename_functions[class_name][method_name]
         return None
 
     def get_class_or_rename_class(self, class_name):
-        if self.rename_classes.has_key(class_name):
+        if class_name in self.rename_classes:
             # print >> sys.stderr, "will rename %s to %s" % (method_name, self.rename_functions[class_name][method_name])
             return self.rename_classes[class_name]
         return class_name
 
     def should_skip(self, class_name, method_name, verbose=False):
-        if class_name == "*" and self.skip_classes.has_key("*"):
+        if class_name == "*" and "*" in self.skip_classes:
             for func in self.skip_classes["*"]:
                 if re.match(func, method_name):
                     return True
         else:
-            for key in self.skip_classes.iterkeys():
+            for key in self.skip_classes:
                 if key == "*" or re.match("^" + key + "$", class_name):
                     if verbose:
-                        print "%s in skip_classes" % (class_name)
+                        print("%s in skip_classes" % (class_name))
                     if len(self.skip_classes[key]) == 1 and self.skip_classes[key][0] == "*":
                         if verbose:
-                            print "%s will be skipped completely" % (class_name)
+                            print("%s will be skipped completely" % (class_name))
                         return True
-                    if method_name != None:
+                    if method_name is not None:
                         for func in self.skip_classes[key]:
                             if re.match(func, method_name):
                                 if verbose:
-                                    print "%s will skip method %s" % (class_name, method_name)
+                                    print("%s will skip method %s" % (class_name, method_name))
                                 return True
         if verbose:
-            print "%s will be accepted (%s, %s)" % (class_name, key, self.skip_classes[key])
+            print("%s will be accepted (%s, %s)" % (class_name, key, self.skip_classes[key]))
         return False
 
     def in_listed_classes(self, class_name):
@@ -648,7 +648,7 @@ class Generator(object):
         sorted classes in order of inheritance
         '''
         sorted_list = []
-        for class_name in self.generated_classes.iterkeys():
+        for class_name in self.generated_classes:
             nclass = self.generated_classes[class_name]
             sorted_list += self._sorted_parents(nclass)
         # remove dupes from the list
@@ -707,8 +707,8 @@ class Generator(object):
         print("====\nErrors in parsing headers:")
         severities=['Ignored', 'Note', 'Warning', 'Error', 'Fatal']
         for idx, d in enumerate(diagnostics):
-            print "%s. <severity = %s,\n    location = %r,\n    details = %r>" % (
-                idx+1, severities[d.severity], d.location, d.spelling)
+            print("%s. <severity = %s,\n    location = %r,\n    details = %r>" % (
+                idx+1, severities[d.severity], d.location, d.spelling))
         print("====\n")
         
     def _parse_headers(self):
@@ -729,7 +729,7 @@ class Generator(object):
         # get the canonical type
         if cursor.kind == cindex.CursorKind.CLASS_DECL:
             if cursor == cursor.type.get_declaration() and len(cursor.get_children_array()) > 0 and self.in_listed_classes(cursor.displayname):
-                if not self.generated_classes.has_key(cursor.displayname):
+                if cursor.displayname not in self.generated_classes:
                     nclass = NativeClass(cursor, self)
                     nclass.generate_code()
                     self.generated_classes[cursor.displayname] = nclass
@@ -763,7 +763,7 @@ def main():
 
     userconfig = ConfigParser.SafeConfigParser()
     userconfig.read('userconf.ini')
-    print 'Using userconfig \n ', userconfig.items('DEFAULT')
+    print('Using userconfig \n ', userconfig.items('DEFAULT'))
 
     config = ConfigParser.SafeConfigParser()
     config.read(args[0])
@@ -808,9 +808,9 @@ def main():
         if t == ".svn" or t == ".cvs" or t == ".git" or t == ".gitignore":
             continue
 
-        print "\n.... Generating bindings for target", t
+        print("\n.... Generating bindings for target", t)
         for s in sections:
-            print "\n.... .... Processing section", s, "\n"
+            print("\n.... .... Processing section", s, "\n")
             gen_opts = {
                 'prefix': config.get(s, 'prefix'),
                 'headers':    (config.get(s, 'headers'        , 0, dict(userconfig.items('DEFAULT')))),
@@ -836,5 +836,5 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as e:
-        print e
+        print(e)
         sys.exit(1)

@@ -24,15 +24,15 @@ import json
 import shutil
 
 def dumpUsage():
-    print "Usage: create_project.py -project PROJECT_NAME -package PACKAGE_NAME -language PROGRAMING_LANGUAGE"
-    print "Options:"
-    print "  -project   PROJECT_NAME          Project name, for example: MyGame"
-    print "  -package   PACKAGE_NAME          Package name, for example: com.MyCompany.MyAwesomeGame"
-    print "  -language  PROGRAMING_LANGUAGE   Major programing lanauge you want to used, should be [cpp | lua | javascript]"
-    print ""
-    print "Sample 1: ./create_project.py -project MyGame -package com.MyCompany.AwesomeGame"
-    print "Sample 2: ./create_project.py -project MyGame -package com.MyCompany.AwesomeGame -language javascript"
-    print ""
+    print("Usage: create_project.py -project PROJECT_NAME -package PACKAGE_NAME -language PROGRAMING_LANGUAGE")
+    print("Options:")
+    print("  -project   PROJECT_NAME          Project name, for example: MyGame")
+    print("  -package   PACKAGE_NAME          Package name, for example: com.MyCompany.MyAwesomeGame")
+    print("  -language  PROGRAMING_LANGUAGE   Major programing lanauge you want to used, should be [cpp | lua | javascript]")
+    print("")
+    print("Sample 1: ./create_project.py -project MyGame -package com.MyCompany.AwesomeGame")
+    print("Sample 2: ./create_project.py -project MyGame -package com.MyCompany.AwesomeGame -language javascript")
+    print("")
 
 def checkParams(context):
     # generate our internal params
@@ -60,13 +60,13 @@ def checkParams(context):
     # pinrt error log our required paramters are not ready
     raise_error = False
     if context["dst_project_name"] == "undefined":
-        print "Invalid -project parameter"
+        print("Invalid -project parameter")
         raise_error = True
     if context["dst_package_name"] == "undefined":
-        print "Invalid -package parameter"
+        print("Invalid -package parameter")
         raise_error = True
     if context["language"] == "undefined":
-        print "Invalid -language parameter"
+        print("Invalid -language parameter")
         raise_error = True
     if raise_error != False:
         sys.exit()
@@ -182,7 +182,7 @@ def processPlatformProjects(platform):
             replaceString(proj_path + dst, context["src_project_name"], context["dst_project_name"])
                   
     # done!
-    print "proj.%s\t\t: Done!" % platform
+    print("proj.%s\t\t: Done!" % platform)
 # end of processPlatformProjects
 
 
@@ -198,8 +198,8 @@ checkParams(context)
 
 # copy "lauguage"(cpp/lua/javascript) platform.proj into cocos2d-x/projects/<project_name>/folder
 if (os.path.exists(context["dst_project_path"]) == True):
-    print "Error:" + context["dst_project_path"] + " folder is already existing"
-    print "Please remove the old project or choose a new PROJECT_NAME in -project parameter"
+    print("Error:" + context["dst_project_path"] + " folder is already existing")
+    print("Please remove the old project or choose a new PROJECT_NAME in -project parameter")
     sys.exit()
 else:
     shutil.copytree(context["src_project_path"], context["dst_project_path"], True)
@@ -210,6 +210,6 @@ for platform in platforms_list:
 #    exec "import %s.handle_project_files" % (platform)
 #    exec "%s.handle_project_files.handle_project_files(context)" % (platform)
 
-print "New project has been created in this path: " + context["dst_project_path"].replace("/tools/project-creator/../..", "")
-print "Have Fun!"
+print("New project has been created in this path: " + context["dst_project_path"].replace("/tools/project-creator/../..", ""))
+print("Have Fun!")
 

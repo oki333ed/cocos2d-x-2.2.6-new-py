@@ -28,5 +28,5 @@ class CCPluginVersion(cocos2d.CCPlugin):
         return "version\t\tprints the version of the installed components"
 
     def run(self, argv):
-        print "version called!"
-        print argv
+        print("version called!")
+        print(argv)

@@ -2,13 +2,13 @@ setAutoWaitTimeout(10000)
 
 val = getFindFailedResponse()
 if val == ABORT:
-    print "Abort"
+    print("Abort")
 if val == SKIP:
-    print "SKIP"
+    print("SKIP")
 if val == PROMPT:
-    print "PROMPT"
+    print("PROMPT")
 if val == RETRY:
-    print "RETRY"
+    print("RETRY")
 
 def common_test(a,b,c):
     for i in range(a,b):
@@ -213,10 +213,10 @@ print("LabelTest finished!")
 #TextInputTest
 print("Run TextInputTest")
 click("TextInputTest.png")
-type("TextInput_herefor.png", "1q~<?;\@")
+type("TextInput_herefor.png", "1q~<?;\\@")
 click("TextInput_return.png")
 click("Next.png")
-type("TextInput_herefor.png", "1q~<?;\@")
+type("TextInput_herefor.png", "1q~<?;\\@")
 click("TextInput_return.png")
 click("MainMenu_Common.png")
 print("TextInputTest finished!")

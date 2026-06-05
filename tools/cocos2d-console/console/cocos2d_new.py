@@ -17,7 +17,7 @@ __docformat__ = 'restructuredtext'
 import os
 import sys
 import getopt
-import ConfigParser
+import configparser
 
 import cocos2d
 
@@ -46,8 +46,8 @@ class CCPluginNew(cocos2d.CCPlugin):
                     directory = arg
                 elif opt in ("h", "--help"):
                     help()
-        except getopt.GetoptError, e:
-            print e
+        except getopt.GetoptError as e:
+            print(e)
             opts, args = getopt.getopt(argv, "", [])
 
         return {"dir": directory, "name": name}
@@ -58,11 +58,11 @@ class CCPluginNew(cocos2d.CCPlugin):
         d = os.path.join(os.path.abspath('.'), args["dir"])
         if os.path.exists(d):
             raise Exception("Error: Can't create project. Directory already exists: %s" % d)
-        print '*****: %s' % args["dir"]
+        print('*****: %s' % args["dir"])
         os.makedirs(d)
 
         # 2nd create ini file
-        config = ConfigParser.RawConfigParser()
+        config = configparser.RawConfigParser()
         project_name = 'project "%s"' % args["name"]
         config.add_section(project_name)
         config.set(project_name, 'res_path', 'res')
